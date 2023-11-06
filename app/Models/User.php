@@ -42,4 +42,20 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function logins()
+    {
+        return $this->hasMany(Login::class);
+    }
+
+    public function scopeLastLoginAt($query): void
+    {
+        $query->addSelect(['last_login_at' => Login::query()
+            ->select('created_at')
+            ->whereColumn('user_id', 'users.id')
+            ->latest()
+            ->take(1)
+        ])
+        ->withCasts(['last_login_at' => 'datetime']);
+    }
 }
