@@ -10,30 +10,19 @@ class UserController extends Controller
 {
     public function index()
     {
-        // Too much model load here ------------------------------------------------------------------------------------
 //        $users = User::query()
-//            ->with('logins')
+//            ->lastLoginAt()
+//            ->lastLoginIpAddress()
 //            ->orderBy('name')
 //            ->paginate();
 
-        // Modify the sql to reduce the model --------------------------------------------------------------------------
-//        $users = User::query()
-//            ->addSelect(['last_login_at' => Login::query()
-//                ->select('created_at')
-//                ->whereColumn('user_id', 'users.id')
-//                ->latest()
-//                ->take(1)
-//            ])
-//            ->withCasts(['last_login_at' => 'datetime'])
-//            ->orderBy('name')
-//            ->paginate();
-
-        // Move to scope -----------------------------------------------------------------------------------------------
+        // Move to dynamic relation
         $users = User::query()
-            ->lastLoginAt()
+            ->lastLogin()
             ->orderBy('name')
             ->paginate();
 
-        return view('lesson-03.users', compact('users'));
+
+        return view('lesson-04.users', compact('users'));
     }
 }

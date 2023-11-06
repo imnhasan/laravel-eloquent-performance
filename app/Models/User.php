@@ -43,19 +43,45 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function logins()
+//    public function logins()
+//    {
+//        return $this->hasMany(Login::class);
+//    }
+//
+//    public function scopeLastLoginAt($query): void
+//    {
+//        $query->addSelect(['last_login_at' => Login::query()
+//            ->select('created_at')
+//            ->whereColumn('user_id', 'users.id')
+//            ->latest()
+//            ->take(1)
+//        ])
+//        ->withCasts(['last_login_at' => 'datetime']);
+//    }
+//
+//    public function scopeLastLoginIpAddress($query): void
+//    {
+//        $query->addSelect(['last_login_ip_address' => Login::query()
+//            ->select('ip_address')
+//            ->whereColumn('user_id', 'users.id')
+//            ->latest()
+//            ->take(1)
+//        ]);
+//    }
+
+    public function lastLogin()
     {
-        return $this->hasMany(Login::class);
+        return $this->belongsTo(Login::class);
     }
 
-    public function scopeLastLoginAt($query): void
+    // Move to dynamic column and give a relation with lastLogin
+    public function scopeLastLogin($query): void
     {
-        $query->addSelect(['last_login_at' => Login::query()
-            ->select('created_at')
+        $query->addSelect(['last_login_id' => Login::query()
+            ->select('id')
             ->whereColumn('user_id', 'users.id')
             ->latest()
             ->take(1)
-        ])
-        ->withCasts(['last_login_at' => 'datetime']);
+        ])->with('lastLogin');
     }
 }
