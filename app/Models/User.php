@@ -50,15 +50,31 @@ class User extends Authenticatable
 
     public function scopeSearch($query, string $terms = null)
     {
+//        $query->join('companies', 'companies.id', '=', 'users.company_id');
+//
+//        collect(str_getcsv($terms, ' ', '"'))->filter()->each(function ($term) use ($query){
+//           $term = $term.'%';
+//           $query->where(function ($query) use ($term){
+//               $query->where('first_name', 'like', $term)
+//                   ->orWhere('last_name', 'like', $term)
+//                   ->orWhere('companies.name', 'like', $term);
+//           });
+//        });
+
+//        --------------------------------------------------------------------------------------------------------------
+
         collect(str_getcsv($terms, ' ', '"'))->filter()->each(function ($term) use ($query){
-           $term = $term.'%';
-           $query->where(function ($query) use ($term){
-               $query->where('first_name', 'like', $term)
-                   ->orWhere('last_name', 'like', $term)
-                   ->orWhereHas('company', function ($query) use ($term){
-                      $query->where('name', 'like', $term);
-                   });
-           });
+            $term = $term.'%';
+            $query->where(function ($query) use ($term){
+                $query->where('first_name', 'like', $term)
+                    ->orWhere('last_name', 'like', $term)
+                    //->orWhereIn('company_id', [1,2,3,4]) something like that.
+                    ->orWhereIn('company_id', function ($query) use ($term){
+                       $query->select('id')
+                           ->from('companies')
+                           ->where('name', 'like', $term);
+                    });
+            });
         });
     }
 }
