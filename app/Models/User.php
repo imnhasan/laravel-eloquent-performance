@@ -29,7 +29,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
+        //'password',
         'remember_token',
     ];
 
@@ -42,4 +42,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
+    }
+
+    public function scopeSearch($query, string $terms = null)
+    {
+        collect(explode(' ', $terms))->filter()->each(function ($term) use ($query){
+           $term = '%'.$term.'%';
+           $query->where(function ($query) use ($term){
+               $query->where('first_name', 'like', $term)
+                   ->orWhere('last_name', 'like', $term)
+                   ->orWhereHas('company', function ($query) use ($term){
+                      $query->where('name', 'like', $term);
+                   });
+           });
+        });
+    }
 }
