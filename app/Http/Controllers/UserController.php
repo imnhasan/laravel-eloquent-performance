@@ -15,6 +15,6 @@ class UserController extends Controller
             ->search(request('search'))
             ->paginate();
 
-        return view('lesson-07.users', compact('users'));
+        return view('lesson-08.users', compact('users'));
     }
 }
