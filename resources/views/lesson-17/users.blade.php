@@ -21,7 +21,6 @@
                     <tr>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        {{--<td>{{ $user->last_login_at->diffForHumans() }} <span>({{ $user->last_login_ip_address }})</span></td>--}}
                         <td>{{ $user->lastLogin->created_at->diffForHumans() }} <span>({{ $user->lastLogin->ip_address }})</span></td>
                     </tr>
                 @endforeach
