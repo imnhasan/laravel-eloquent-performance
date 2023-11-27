@@ -28,13 +28,13 @@ class UserController extends Controller
 
         $users = User::query()
             ->orderBy(Company::select('name')
-                ->whereColumn('user_id', 'users.id')
+                ->whereColumn('id', 'users.company_id')
                 ->orderBy('name')
                 ->take(1)
             )
             ->with('company')
             ->paginate();
 
-        return view('lesson-15.users', compact('users'));
+        return view('lesson-16.users', compact('users'));
     }
 }
