@@ -22,6 +22,16 @@ class UserFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'town' => rand(0, 10)
+                ? fake()->randomElement([
+                    'Dhaka',
+                    'Khulna',
+                    'Rangpur',
+                    'Chattogram',
+                    'Barishal',
+                    'Sylhet',
+                ])
+                : null,
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),

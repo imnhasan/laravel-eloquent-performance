@@ -38,7 +38,8 @@
             </a>
 
             <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
-                <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="">Check Branch</a>
+                <a class="me-3 py-2 btn {{ request()->is('users*') ? 'btn-success' : ''}} link-body-emphasis text-decoration-none" href="{{ route('users.index') }}">Users</a>
+                <a class="me-3 py-2 btn {{ request()->is('books*') ? 'btn-success' : ''}} link-body-emphasis text-decoration-none" href="{{ route('books.index') }}">Books</a>
             </nav>
         </div>
     </header>
