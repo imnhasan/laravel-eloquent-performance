@@ -9,7 +9,11 @@ class LocationController extends Controller
 {
     public function index()
     {
+
+//        $myLocation = [-79.47, 43.14];
+//
 //        $locations = Location::query()
+//            ->selectDistanceTo($myLocation)
 //            ->paginate();
 
 //        --------------------------------------------------------------------------------------------------------------
@@ -18,9 +22,11 @@ class LocationController extends Controller
 
         $locations = Location::query()
             ->selectDistanceTo($myLocation)
+            ->withinDistanceTo($myLocation, 10000) // 10km
             ->paginate();
 
 
-        return view('lesson-24.locations', compact('locations'));
+
+        return view('lesson-25.locations', compact('locations'));
     }
 }

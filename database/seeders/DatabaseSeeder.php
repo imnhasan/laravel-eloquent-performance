@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Location;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,8 +23,14 @@ class DatabaseSeeder extends Seeder
                'city' => $location[1],
                'state' => $location[2],
                'postal' => $location[3],
-               'longitude' => $location[4],
-               'latitude' => $location[5],
+
+//               'longitude' => $location[4],
+//               'latitude' => $location[5],
+
+//           -----------------------------------------------------------------------------------------------------------
+
+           'location' => DB::raw('ST_SRID(Point('.$location[4].','.$location[5].'), 4326)'),
+
            ]);
         });
 

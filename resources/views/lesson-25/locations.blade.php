@@ -21,7 +21,6 @@
                     <tr>
                         <td>{{ $location->address }}</td>
                         <td>{{ "$location->city, $location->state" }}</td>
-{{--                        <td>{{ $location->distance }}</td>--}}
                         <td>{{ number_format($location->distance / 1000, 2) }} km</td>
                     </tr>
                 @endforeach
