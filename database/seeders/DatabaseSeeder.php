@@ -14,25 +14,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        $locations = array_map('str_getcsv', file(__DIR__.'/locations.csv'));
+        $locations = array_map('str_getcsv', file(__DIR__ . '/locations.csv'));
 
         collect($locations)->each(function ($location) {
-           Location::create([
-               'address' => $location[0],
-               'city' => $location[1],
-               'state' => $location[2],
-               'postal' => $location[3],
+            Location::create([
+                'address' => $location[0],
+                'city' => $location[1],
+                'state' => $location[2],
+                'postal' => $location[3],
+                'location' => DB::raw('ST_SRID(Point(' . $location[4] . ',' . $location[5] . '), 4326)'),
 
-//               'longitude' => $location[4],
-//               'latitude' => $location[5],
-
-//           -----------------------------------------------------------------------------------------------------------
-
-           'location' => DB::raw('ST_SRID(Point('.$location[4].','.$location[5].'), 4326)'),
-
-           ]);
+            ]);
         });
-
     }
 }

@@ -14,6 +14,7 @@ class LocationController extends Controller
 //
 //        $locations = Location::query()
 //            ->selectDistanceTo($myLocation)
+//            ->withinDistanceTo($myLocation, 10000) // 10km
 //            ->paginate();
 
 //        --------------------------------------------------------------------------------------------------------------
@@ -22,11 +23,12 @@ class LocationController extends Controller
 
         $locations = Location::query()
             ->selectDistanceTo($myLocation)
-            ->withinDistanceTo($myLocation, 10000) // 10km
+            ->withinDistanceTo($myLocation, 10000)
+            ->orderByDistanceTo($myLocation)
             ->paginate();
 
 
 
-        return view('lesson-25.locations', compact('locations'));
+        return view('lesson-26.locations', compact('locations'));
     }
 }

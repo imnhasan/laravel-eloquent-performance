@@ -15,34 +15,28 @@ class Location extends Model
             $query->select('*');
         }
 
-//        $query->selectRaw('ST_Distance(
-//                ST_SRID(Point(longitude, latitude), 4326),
-//                ST_SRID(Point(?, ?), 4326)
-//            ) as distance', $coordinates);
-
-//        --------------------------------------------------------------------------------------------------------------
-
         $query->selectRaw('ST_Distance(
                 location,
                 ST_SRID(Point(?, ?), 4326)
             ) as distance', $coordinates);
-
     }
 
     public function scopeWithinDistanceTo($query, array $coordinates, int $distance)
     {
-//        $query->whereRaw('ST_Distance(
-//            ST_SRID(Point(longitude, latitude), 4326),
-//            ST_SRID(Point(?, ?), 4326)
-//        ) <= ?',  [...$coordinates, $distance]);
-
-//        --------------------------------------------------------------------------------------------------------------
-
         $query->whereRaw('ST_Distance(
             location,
             ST_SRID(Point(?, ?), 4326)
         ) <= ?',  [...$coordinates, $distance]);
-
-
     }
+
+    public function scopeOrderByDistanceTo($query, array $coordinates, string $direction = 'asc')
+    {
+        $direction = strtolower($direction) === 'asc' ? 'asc' : 'desc';
+
+        $query->orderByRaw('ST_Distance(
+            location,
+            ST_SRID(Point(?, ?), 4326)
+        )'.$direction, $coordinates);
+    }
+
 }
